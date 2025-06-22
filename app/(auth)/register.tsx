@@ -10,6 +10,7 @@ import * as Icons from 'phosphor-react-native'
 import Button from "@/components/Button";
 import {isLoading} from "expo-font";
 import {useRouter} from "expo-router";
+import {useAuth} from "@/contexts/authContext";
 
 const Register = () => {
     const emailRef = useRef('');
@@ -17,12 +18,15 @@ const Register = () => {
     const nameRef = useRef('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
+    const {register:registerUser} = useAuth()
     const handleSubmit = async () => {
         if (!emailRef.current || !passwordRef.current || !nameRef.current) {
             Alert.alert("Sign up","Please fill all the fields");
             return;
         }
+        setIsLoading(true);
         console.log(nameRef.current, emailRef.current, passwordRef.current);
+        const res = await registerUser(emailRef.current, passwordRef.current, nameRef.current);
     }
     return (
         <ScreenWrapper>
